@@ -13,5 +13,7 @@ public class ExpensesModel {
     private Integer healthCare;
     private Integer entertainment;
     private Integer debt;
+    private Integer year;
+    private String month;
 
 }

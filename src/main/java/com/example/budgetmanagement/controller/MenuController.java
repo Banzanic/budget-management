@@ -1,5 +1,4 @@
 package com.example.budgetmanagement.controller;
-import com.example.budgetmanagement.model.DateModel;
 import com.example.budgetmanagement.model.ExpensesModel;
 import com.example.budgetmanagement.model.IncomeModel;
 import org.springframework.stereotype.Controller;
@@ -16,10 +15,8 @@ public class MenuController {
 
     @GetMapping("/functionality")
     public String getFunctionality(Model model) {
-        model.addAttribute("dateModel", new DateModel());
         model.addAttribute("expensesModel", new ExpensesModel());
         model.addAttribute("incomeModel", new IncomeModel());
-        System.out.println(model.getAttribute("dateModel"));
         System.out.println(model.getAttribute("expensesModel"));
         System.out.println(model.getAttribute("incomeModel"));
         return "functionality";

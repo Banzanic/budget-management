@@ -12,5 +12,7 @@ public class IncomeModel {
     private Integer interest;
     private Integer rental;
     private Integer sales;
+    private Integer year;
+    private String month;
 
 }

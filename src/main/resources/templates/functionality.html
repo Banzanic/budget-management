@@ -21,10 +21,12 @@
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="expenses-tab" data-bs-toggle="tab" href="#expenses" role="tab" aria-controls="expenses" aria-selected="true">Expenses</a>
+                    <a class="nav-link active" id="expenses-tab" data-bs-toggle="tab" href="#expenses" role="tab"
+                       aria-controls="expenses" aria-selected="true">Expenses</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="income-tab" data-bs-toggle="tab" href="#income" role="tab" aria-controls="income" aria-selected="false">Income</a>
+                    <a class="nav-link" id="income-tab" data-bs-toggle="tab" href="#income" role="tab"
+                       aria-controls="income" aria-selected="false">Income</a>
                 </li>
             </ul>
         </div>
@@ -34,31 +36,77 @@
                     <form id="form1" th:action="@{/submitExpenses}" th:object="${expensesModel}" method="post">
                         <div class="mb-3">
                             <label for="groceries" class="form-label">Groceries</label>
-                            <input type="text" class="form-control" id="groceries" placeholder="Enter amount" th:field="*{groceries}">
+                            <input type="text" class="form-control" id="groceries" placeholder="Enter amount"
+                                   th:field="*{groceries}">
                         </div>
                         <div class="mb-3">
                             <label for="rent" class="form-label">Rent</label>
-                            <input type="text" class="form-control" id="rent" placeholder="Enter amount" th:field="*{rent}">
+                            <input type="text" class="form-control" id="rent" placeholder="Enter amount"
+                                   th:field="*{rent}">
                         </div>
                         <div class="mb-3">
                             <label for="transportation" class="form-label">Transportation</label>
-                            <input type="text" class="form-control" id="transportation" placeholder="Enter amount" th:field="*{transportation}">
+                            <input type="text" class="form-control" id="transportation" placeholder="Enter amount"
+                                   th:field="*{transportation}">
                         </div>
                         <div class="mb-3">
                             <label for="subscriptions" class="form-label">Subscriptions</label>
-                            <input type="text" class="form-control" id="subscriptions" placeholder="Enter amount" th:field="*{subscriptions}">
+                            <input type="text" class="form-control" id="subscriptions" placeholder="Enter amount"
+                                   th:field="*{subscriptions}">
                         </div>
                         <div class="mb-3">
                             <label for="health care" class="form-label">Health care</label>
-                            <input type="text" class="form-control" id="health care" placeholder="Enter amount" th:field="*{healthCare}">
+                            <input type="text" class="form-control" id="health care" placeholder="Enter amount"
+                                   th:field="*{healthCare}">
                         </div>
                         <div class="mb-3">
                             <label for="entertainment" class="form-label">Entertainment</label>
-                            <input type="text" class="form-control" id="entertainment" placeholder="Enter amount" th:field="*{entertainment}">
+                            <input type="text" class="form-control" id="entertainment" placeholder="Enter amount"
+                                   th:field="*{entertainment}">
                         </div>
                         <div class="mb-3">
                             <label for="debt" class="form-label">Debt</label>
-                            <input type="text" class="form-control" id="debt" placeholder="Enter amount" th:field="*{debt}">
+                            <input type="text" class="form-control" id="debt" placeholder="Enter amount"
+                                   th:field="*{debt}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="yearExpenses" class="form-label">Year</label>
+                            <select class="form-select" id="yearExpenses" th:field="*{year}">
+                                <option selected value="">Choose...</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+                                <option value="2018">2018</option>
+                                <option value="2017">2017</option>
+                                <option value="2016">2016</option>
+                                <option value="2015">2015</option>
+                                <option value="2014">2014</option>
+                                <option value="2013">2013</option>
+                                <option value="2012">2012</option>
+                                <option value="2011">2011</option>
+                                <option value="2010">2010</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="monthExpenses" class="form-label">Month</label>
+                            <select class="form-select" id="monthExpenses" th:field="*{month}">
+                                <option selected value="">Choose...</option>
+                                <option value="january">January</option>
+                                <option value="february">February</option>
+                                <option value="march">March</option>
+                                <option value="april">April</option>
+                                <option value="may">May</option>
+                                <option value="june">June</option>
+                                <option value="july">July</option>
+                                <option value="august">August</option>
+                                <option value="september">September</option>
+                                <option value="october">October</option>
+                                <option value="november">November</option>
+                                <option value="december">December</option>
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-primary">AddExpense</button>
                     </form>
@@ -67,76 +115,77 @@
                     <form id="form2" th:action="@{/submitIncome}" th:object="${incomeModel}" method="post">
                         <div class="mb-3">
                             <label for="salary" class="form-label">Salary</label>
-                            <input type="text" class="form-control" id="salary" placeholder="Enter amount" th:field="*{salary}">
+                            <input type="text" class="form-control" id="salary" placeholder="Enter amount"
+                                   th:field="*{salary}">
                         </div>
                         <div class="mb-3">
                             <label for="investment" class="form-label">Investment</label>
-                            <input type="text" class="form-control" id="investment" placeholder="Enter amount" th:field="*{investment}">
+                            <input type="text" class="form-control" id="investment" placeholder="Enter amount"
+                                   th:field="*{investment}">
                         </div>
                         <div class="mb-3">
                             <label for="gift" class="form-label">Gift</label>
-                            <input type="text" class="form-control" id="gift" placeholder="Enter amount" th:field="*{gift}">
+                            <input type="text" class="form-control" id="gift" placeholder="Enter amount"
+                                   th:field="*{gift}">
                         </div>
                         <div class="mb-3">
                             <label for="interest" class="form-label">Interest</label>
-                            <input type="text" class="form-control" id="interest" placeholder="Enter amount" th:field="*{interest}">
+                            <input type="text" class="form-control" id="interest" placeholder="Enter amount"
+                                   th:field="*{interest}">
                         </div>
                         <div class="mb-3">
                             <label for="rental" class="form-label">Rental</label>
-                            <input type="text" class="form-control" id="rental" placeholder="Enter amount" th:field="*{rental}">
+                            <input type="text" class="form-control" id="rental" placeholder="Enter amount"
+                                   th:field="*{rental}">
                         </div>
                         <div class="mb-3">
                             <label for="sales" class="form-label">Sales</label>
-                            <input type="text" class="form-control" id="sales" placeholder="Enter amount" th:field="*{sales}">
+                            <input type="text" class="form-control" id="sales" placeholder="Enter amount"
+                                   th:field="*{sales}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="yearIncome" class="form-label">Year</label>
+                            <select class="form-select" id="yearIncome" th:field="*{year}">
+                                <option selected value="">Choose...</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+                                <option value="2018">2018</option>
+                                <option value="2017">2017</option>
+                                <option value="2016">2016</option>
+                                <option value="2015">2015</option>
+                                <option value="2014">2014</option>
+                                <option value="2013">2013</option>
+                                <option value="2012">2012</option>
+                                <option value="2011">2011</option>
+                                <option value="2010">2010</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="monthIncome" class="form-label">Month</label>
+                            <select class="form-select" id="monthIncome" th:field="*{month}">
+                                <option selected value="">Choose...</option>
+                                <option value="january">January</option>
+                                <option value="february">February</option>
+                                <option value="march">March</option>
+                                <option value="april">April</option>
+                                <option value="may">May</option>
+                                <option value="june">June</option>
+                                <option value="july">July</option>
+                                <option value="august">August</option>
+                                <option value="september">September</option>
+                                <option value="october">October</option>
+                                <option value="november">November</option>
+                                <option value="december">December</option>
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-primary">AddIncome</button>
                     </form>
                 </div>
             </div>
-        </div>
-        <div class="card-footer">
-            <form id="form3" th:action="@{/submitDate}" th:object="${dateModel}" method="post">
-                <div class="mb-3">
-                    <label for="year" class="form-label">Year</label>
-                    <select class="form-select" id="year" th:field="*{year}">
-                        <option selected value="">Choose...</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                        <option value="2019">2019</option>
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                        <option value="2016">2016</option>
-                        <option value="2015">2015</option>
-                        <option value="2014">2014</option>
-                        <option value="2013">2013</option>
-                        <option value="2012">2012</option>
-                        <option value="2011">2011</option>
-                        <option value="2010">2010</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="month" class="form-label">Month</label>
-                    <select class="form-select" id="month" th:field="*{month}">
-                        <option selected value="">Choose...</option>
-                        <option value="january">January</option>
-                        <option value="february">February</option>
-                        <option value="march">March</option>
-                        <option value="april">April</option>
-                        <option value="may">May</option>
-                        <option value="june">June</option>
-                        <option value="july">July</option>
-                        <option value="august">August</option>
-                        <option value="september">September</option>
-                        <option value="october">October</option>
-                        <option value="november">November</option>
-                        <option value="december">December</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">AddDate</button>
-            </form>
         </div>
     </div>
 </div>
