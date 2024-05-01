@@ -31,7 +31,7 @@
         <div class="card-body">
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="expenses" role="tabpanel" aria-labelledby="expenses-tab">
-                    <form th:action="@{/submitExpenses}" th:object="${expensesModel}" method="post">
+                    <form id="form1" th:action="@{/submitExpenses}" th:object="${expensesModel}" method="post">
                         <div class="mb-3">
                             <label for="groceries" class="form-label">Groceries</label>
                             <input type="text" class="form-control" id="groceries" placeholder="Enter amount" th:field="*{groceries}">
@@ -60,10 +60,11 @@
                             <label for="debt" class="form-label">Debt</label>
                             <input type="text" class="form-control" id="debt" placeholder="Enter amount" th:field="*{debt}">
                         </div>
+                        <button type="submit" class="btn btn-primary">AddExpense</button>
                     </form>
                 </div>
                 <div class="tab-pane fade" id="income" role="tabpanel" aria-labelledby="income-tab">
-                    <form th:action="@{/submitIncome}" th:object="${incomeModel}" method="post">
+                    <form id="form2" th:action="@{/submitIncome}" th:object="${incomeModel}" method="post">
                         <div class="mb-3">
                             <label for="salary" class="form-label">Salary</label>
                             <input type="text" class="form-control" id="salary" placeholder="Enter amount" th:field="*{salary}">
@@ -88,12 +89,13 @@
                             <label for="sales" class="form-label">Sales</label>
                             <input type="text" class="form-control" id="sales" placeholder="Enter amount" th:field="*{sales}">
                         </div>
+                        <button type="submit" class="btn btn-primary">AddIncome</button>
                     </form>
                 </div>
             </div>
         </div>
         <div class="card-footer">
-            <form th:action="@{/submitDate}" th:object="${dateModel}" method="post">
+            <form id="form3" th:action="@{/submitDate}" th:object="${dateModel}" method="post">
                 <div class="mb-3">
                     <label for="year" class="form-label">Year</label>
                     <select class="form-select" id="year" th:field="*{year}">
@@ -133,7 +135,7 @@
                         <option value="december">December</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Add</button>
+                <button type="submit" class="btn btn-primary">AddDate</button>
             </form>
         </div>
     </div>
