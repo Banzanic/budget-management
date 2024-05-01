@@ -1,22 +1,12 @@
 package com.example.budgetmanagement.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class DateModel {
     private Integer year;
     private String month;
 
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public String getMonth() {
-        return month;
-    }
-
-    public void setMonth(String month){
-        this.month = month;
-    }
 }
