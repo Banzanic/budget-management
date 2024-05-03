@@ -1,4 +1,5 @@
 package com.example.budgetmanagement.controller;
+
 import com.example.budgetmanagement.model.ExpensesModel;
 import com.example.budgetmanagement.model.IncomeModel;
 import org.springframework.stereotype.Controller;
