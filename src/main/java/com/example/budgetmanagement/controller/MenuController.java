@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDate;
+
 @Controller
 public class MenuController {
 
@@ -18,8 +20,10 @@ public class MenuController {
     public String getFunctionality(Model model) {
         model.addAttribute("expensesModel", new ExpensesModel());
         model.addAttribute("incomeModel", new IncomeModel());
-        System.out.println(model.getAttribute("expensesModel"));
-        System.out.println(model.getAttribute("incomeModel"));
+
+        model.addAttribute("currentYear", Integer.toString(LocalDate.now().getYear()));
+        model.addAttribute("currentMonth", LocalDate.now().getMonth());
+
         return "functionality";
     }
 
