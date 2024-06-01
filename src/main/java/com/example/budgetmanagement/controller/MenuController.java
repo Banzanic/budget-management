@@ -5,6 +5,7 @@ import com.example.budgetmanagement.charts.ExpensesChart;
 import com.example.budgetmanagement.charts.IncomeChart;
 import com.example.budgetmanagement.model.ExpensesModel;
 import com.example.budgetmanagement.model.IncomeModel;
+import com.example.budgetmanagement.model.SavingsGoalModel;
 import com.example.budgetmanagement.service.ExpensesService;
 import com.example.budgetmanagement.service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,8 @@ public class MenuController {
         expensesChart.generateBarChartYear();
         expensesChart.generateBarChartMonth();
         expensesChart.generateChart();
+        savingsChart.generateBarChartYear();
+        savingsChart.generateBarChartMonth();
         return "home";
     }
 
@@ -79,7 +82,8 @@ public class MenuController {
     }
 
     @GetMapping("/savings")
-    public String getSavings(){
+    public String getSavings(Model model){
+        model.addAttribute("savingsGoalModel", new SavingsGoalModel());
         savingsChart.generateBarChartYear();
         savingsChart.generateBarChartMonth();
         return "savings";
