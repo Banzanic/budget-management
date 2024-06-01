@@ -4,6 +4,7 @@ import com.example.budgetmanagement.charts.ExpensesChart;
 import com.example.budgetmanagement.charts.IncomeChart;
 import com.example.budgetmanagement.model.ExpensesModel;
 import com.example.budgetmanagement.model.IncomeModel;
+import com.example.budgetmanagement.model.SavingsGoalModel;
 import com.example.budgetmanagement.service.ExpensesService;
 import com.example.budgetmanagement.service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class SubmitController {
 
     @Autowired
     private ExpensesChart expensesChart;
+
+    @Autowired
+    private SavingsGoalModel savingsGoal;
 
     @PostMapping("/submitExpenses")
     public String submitExpenses(@ModelAttribute("expensesModel") ExpensesModel expensesModel, Model model) {
@@ -53,5 +57,21 @@ public class SubmitController {
         incomeChart.generateBarChartMonth();
         incomeChart.generateChart();
         return "functionality";
+    }
+
+    @PostMapping("/setSavingsGoal")
+    public String setSavingsGoal(@ModelAttribute("savingsGoalModel") SavingsGoalModel savingsGoalModel, Model model) {
+        System.out.println("GoalName: " + savingsGoalModel.getGoalName() + ", GoalAmount: " + savingsGoalModel.getGoalAmount());
+        savingsGoal.setGoalName(savingsGoalModel.getGoalName());
+        savingsGoal.setGoalAmount(savingsGoalModel.getGoalAmount());
+
+        int savedAmount = 10;  // zmienić to
+        double progressPercentage = (savedAmount  * 100) / savingsGoalModel.getGoalAmount();
+        System.out.println("ProgressPercentage: " + progressPercentage);
+
+        model.addAttribute("savingsGoalModel", savingsGoalModel);
+        model.addAttribute("progressPercentage", progressPercentage);
+
+        return "savings";
     }
 }
