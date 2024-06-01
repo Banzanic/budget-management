@@ -2,7 +2,6 @@ package com.example.budgetmanagement.charts;
 
 import com.example.budgetmanagement.model.ExpensesModel;
 import com.example.budgetmanagement.service.ExpensesService;
-import com.example.budgetmanagement.service.IncomeService;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -23,16 +21,16 @@ public class ExpensesChart {
     private ExpensesService expensesService;
 
 
-    public void generateBarChartYear(){
+    public void generateBarChartYear() {
         Map<Integer, Integer> yearlyExpenses = expensesService.getYearlyExpenseSums();
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for(Map.Entry<Integer, Integer> entry : yearlyExpenses.entrySet()){
+        for (Map.Entry<Integer, Integer> entry : yearlyExpenses.entrySet()) {
             dataset.addValue(entry.getValue(), "Expenses", entry.getKey());
         }
         JFreeChart chart = ChartFactory.createBarChart(
-                "Yearly Expenses",        // chart title
-                "Year",                 // domain axis label
-                "Expenses",                // range axis label
+                "Yearly Expenses",
+                "Year",
+                "Expenses",
                 dataset,
                 PlotOrientation.VERTICAL,
                 true,
@@ -47,16 +45,16 @@ public class ExpensesChart {
         }
     }
 
-    public void generateBarChartMonth(){
+    public void generateBarChartMonth() {
         Map<String, Integer> monthlyExpenses = expensesService.getMonthlyExpenseSumsByYear(expensesService.getLatestYear());
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for(Map.Entry<String, Integer> entry : monthlyExpenses.entrySet()){
+        for (Map.Entry<String, Integer> entry : monthlyExpenses.entrySet()) {
             dataset.addValue(entry.getValue(), "Expenses", entry.getKey());
         }
         JFreeChart chart = ChartFactory.createBarChart(
-                "Monthly Expenses",        // chart title
-                "Month",                 // domain axis label
-                "Expenses",                // range axis label
+                "Monthly Expenses",
+                "Month",
+                "Expenses",
                 dataset,
                 PlotOrientation.VERTICAL,
                 true,
@@ -74,7 +72,7 @@ public class ExpensesChart {
     public void generateChart() {
         ExpensesModel expense = expensesService.getLatestExpense();
         DefaultPieDataset pieDataset = new DefaultPieDataset();
-        if(expense!=null) {
+        if (expense != null) {
             if (expense.getGroceries() != null) {
                 pieDataset.setValue("groceries", expense.getGroceries());
             }
@@ -98,11 +96,11 @@ public class ExpensesChart {
             }
         }
         JFreeChart chart = ChartFactory.createPieChart
-                ("Expenses", // Title
-                        pieDataset, // Dataset
-                        true, // Show legend
-                        true, // Use tooltips
-                        false // Configure chart to generate URLs?
+                ("Expenses",
+                        pieDataset,
+                        true,
+                        true,
+                        false
                 );
         try {
             ChartUtilities.saveChartAsJPEG(new File("src/main/resources/charts/expenses-chart.jpg"), chart, 500, 300);

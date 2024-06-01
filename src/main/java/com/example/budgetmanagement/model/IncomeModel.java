@@ -22,7 +22,7 @@ public class IncomeModel {
     private Integer sales;
     @Column(name = "y")
     private Integer year;
-    @Column(name = "m", columnDefinition = "VARCHAR(255)")
+    @Column(name = "m")
     private String month;
 
     public int getTotalIncome(){

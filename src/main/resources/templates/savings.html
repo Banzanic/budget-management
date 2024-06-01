@@ -4,12 +4,66 @@
     <meta charset="UTF-8">
     <title>Savings</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <style>
+        .custom-container {
+            display: inline-block;
+            flex-wrap: wrap; /* Allow items to wrap onto the next line */
+            margin-left: 5px;
+            margin-right: auto;
+        }
+    </style>
 </head>
-
 <body>
-<nav th:replace="fragments/navbar :: navbar"></nav>
-<h1>Hello Savings</h1>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"> </script>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+
+<div class="container custom-container mt-4">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="savings-tab" data-bs-toggle="tab" href="#savings" role="tab"
+                               aria-controls="savings" aria-selected="true">Savings</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="savings" role="tabpanel" aria-labelledby="savings-tab">
+                            <form id="form1" th:action="@{/submitSavings}" method="post">
+                                <div class="mb-3">
+                                    <label for="goal-name" class="form-label">Goal name</label>
+                                    <input type="text" class="form-control" id="goal-name" placeholder="Enter name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="goal-amount" class="form-label">Goal Amount</label>
+                                    <input type="text" class="form-control" id="goal-amount" placeholder="Enter amount">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Savings</button>
+                            </form>
+
+                            <div class="progress mt-4">
+                                <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 10%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <img src="/charts/monthly-savings-chart.jpg" class="img-fluid">
+                </div>
+                <div class="col-12 mb-4">
+                    <img src="/charts/yearly-savings-chart.jpg" class="img-fluid">
+                </div>
+            </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
