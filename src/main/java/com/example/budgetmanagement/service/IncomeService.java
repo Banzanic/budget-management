@@ -6,7 +6,6 @@ import com.example.budgetmanagement.repository.IncomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,35 +25,35 @@ public class IncomeService {
         return (List<IncomeModel>) incomeRepository.findAll();
     }
 
-    public IncomeModel getLatestIncome(){
+    public IncomeModel getLatestIncome() {
         List<IncomeModel> incomes = getIncome();
         IncomeModel incomeModel = null;
-        for(IncomeModel income : incomes){
-            if(incomeModel == null || income.getYear()>incomeModel.getYear() || (income.getYear().equals(incomeModel.getYear()) && Integer.parseInt(income.getMonth())>Integer.parseInt(incomeModel.getMonth()))){
+        for (IncomeModel income : incomes) {
+            if (incomeModel == null || income.getYear() > incomeModel.getYear() || (income.getYear().equals(incomeModel.getYear()) && Integer.parseInt(income.getMonth()) > Integer.parseInt(incomeModel.getMonth()))) {
                 incomeModel = income;
             }
         }
         return incomeModel;
     }
 
-    public Integer getLatestYear(){
+    public Integer getLatestYear() {
         List<IncomeModel> incomes = getIncome();
         Integer year = 2010;
-        for(IncomeModel income : incomes){
-            if(income.getYear()>year){
-                year=income.getYear();
+        for (IncomeModel income : incomes) {
+            if (income.getYear() > year) {
+                year = income.getYear();
             }
         }
         return year;
     }
 
-    public Map<Integer, Integer> getYearlyIncomeSums(){
+    public Map<Integer, Integer> getYearlyIncomeSums() {
         List<IncomeModel> incomes = getIncome();
         Map<Integer, Integer> yearlyIncomes = new LinkedHashMap<>();
-        for(int i = 2010; i<=2024;i++){
+        for (int i = 2010; i <= 2024; i++) {
             yearlyIncomes.put(i, 0);
         }
-        for(IncomeModel income : incomes){
+        for (IncomeModel income : incomes) {
             Integer year = income.getYear();
             int existingIncome = yearlyIncomes.get(year);
             int newIncome = existingIncome + income.getTotalIncome();
@@ -63,16 +62,16 @@ public class IncomeService {
         return yearlyIncomes;
     }
 
-    public Map<String, Integer> getMonthlyIncomeSumsByYear(Integer year){
+    public Map<String, Integer> getMonthlyIncomeSumsByYear(Integer year) {
         List<IncomeModel> incomes = getIncome();
         Map<String, Integer> monthlyIncomes = new LinkedHashMap<>();
-        for(int i =1;i <=12;i++){
+        for (int i = 1; i <= 12; i++) {
             monthlyIncomes.put(String.valueOf(i), 0);
         }
-        for(IncomeModel income : incomes){
-            if(income.getYear().equals(year)){
+        for (IncomeModel income : incomes) {
+            if (income.getYear().equals(year)) {
                 String month = income.getMonth();
-                if(!monthlyIncomes.containsKey(month)){
+                if (!monthlyIncomes.containsKey(month)) {
                     monthlyIncomes.put(month, 0);
                 }
                 int existingIncome = monthlyIncomes.get(month);

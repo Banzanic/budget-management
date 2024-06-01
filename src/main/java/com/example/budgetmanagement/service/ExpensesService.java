@@ -1,7 +1,6 @@
 package com.example.budgetmanagement.service;
 
 import com.example.budgetmanagement.model.ExpensesModel;
-import com.example.budgetmanagement.model.IncomeModel;
 import com.example.budgetmanagement.repository.ExpensesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 public class ExpensesService {
@@ -26,35 +24,35 @@ public class ExpensesService {
         return (List<ExpensesModel>) expensesRepository.findAll();
     }
 
-    public ExpensesModel getLatestExpense(){
+    public ExpensesModel getLatestExpense() {
         List<ExpensesModel> expenses = getExpenses();
         ExpensesModel expensesModel = null;
-        for(ExpensesModel expense : expenses){
-            if(expensesModel == null || expense.getYear()>expensesModel.getYear() || (expense.getYear().equals(expensesModel.getYear()) && Integer.parseInt(expense.getMonth())>Integer.parseInt(expensesModel.getMonth()))){
+        for (ExpensesModel expense : expenses) {
+            if (expensesModel == null || expense.getYear() > expensesModel.getYear() || (expense.getYear().equals(expensesModel.getYear()) && Integer.parseInt(expense.getMonth()) > Integer.parseInt(expensesModel.getMonth()))) {
                 expensesModel = expense;
             }
         }
         return expensesModel;
     }
 
-    public Integer getLatestYear(){
+    public Integer getLatestYear() {
         List<ExpensesModel> expenses = getExpenses();
         Integer year = 2010;
-        for(ExpensesModel expense : expenses){
-            if(expense.getYear()>year){
-                year=expense.getYear();
+        for (ExpensesModel expense : expenses) {
+            if (expense.getYear() > year) {
+                year = expense.getYear();
             }
         }
         return year;
     }
 
-    public Map<Integer, Integer> getYearlyExpenseSums(){
+    public Map<Integer, Integer> getYearlyExpenseSums() {
         List<ExpensesModel> expenses = getExpenses();
         Map<Integer, Integer> yearlyExpenses = new LinkedHashMap<>();
-        for(int i = 2010; i<=2024;i++){
+        for (int i = 2010; i <= 2024; i++) {
             yearlyExpenses.put(i, 0);
         }
-        for(ExpensesModel expense : expenses){
+        for (ExpensesModel expense : expenses) {
             Integer year = expense.getYear();
             int existingExpense = yearlyExpenses.get(year);
             int newExpense = existingExpense + expense.getTotalExpense();
@@ -63,16 +61,16 @@ public class ExpensesService {
         return yearlyExpenses;
     }
 
-    public Map<String, Integer> getMonthlyExpenseSumsByYear(Integer year){
+    public Map<String, Integer> getMonthlyExpenseSumsByYear(Integer year) {
         List<ExpensesModel> expenses = getExpenses();
         Map<String, Integer> monthlyExpenses = new LinkedHashMap<>();
-        for(int i =1;i <=12;i++){
+        for (int i = 1; i <= 12; i++) {
             monthlyExpenses.put(String.valueOf(i), 0);
         }
-        for(ExpensesModel expense : expenses){
-            if(expense.getYear().equals(year)){
+        for (ExpensesModel expense : expenses) {
+            if (expense.getYear().equals(year)) {
                 String month = expense.getMonth();
-                if(!monthlyExpenses.containsKey(month)){
+                if (!monthlyExpenses.containsKey(month)) {
                     monthlyExpenses.put(month, 0);
                 }
                 int existingExpense = monthlyExpenses.get(month);

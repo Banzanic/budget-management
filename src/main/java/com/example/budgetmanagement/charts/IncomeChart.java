@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -21,16 +20,16 @@ public class IncomeChart {
     @Autowired
     private IncomeService incomeService;
 
-    public void generateBarChartYear(){
+    public void generateBarChartYear() {
         Map<Integer, Integer> yearlyIncomes = incomeService.getYearlyIncomeSums();
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for(Map.Entry<Integer, Integer> entry : yearlyIncomes.entrySet()){
+        for (Map.Entry<Integer, Integer> entry : yearlyIncomes.entrySet()) {
             dataset.addValue(entry.getValue(), "Income", entry.getKey());
         }
         JFreeChart chart = ChartFactory.createBarChart(
-                "Yearly Income",        // chart title
-                "Year",                 // domain axis label
-                "Income",                // range axis label
+                "Yearly Income",
+                "Year",
+                "Income",
                 dataset,
                 PlotOrientation.VERTICAL,
                 true,
@@ -45,16 +44,16 @@ public class IncomeChart {
         }
     }
 
-    public void generateBarChartMonth(){
+    public void generateBarChartMonth() {
         Map<String, Integer> monthlyIncomes = incomeService.getMonthlyIncomeSumsByYear(incomeService.getLatestYear());
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for(Map.Entry<String, Integer> entry : monthlyIncomes.entrySet()){
+        for (Map.Entry<String, Integer> entry : monthlyIncomes.entrySet()) {
             dataset.addValue(entry.getValue(), "Income", entry.getKey());
         }
         JFreeChart chart = ChartFactory.createBarChart(
-                "Monthly Income",        // chart title
-                "Month",                 // domain axis label
-                "Income",                // range axis label
+                "Monthly Income",
+                "Month",
+                "Income",
                 dataset,
                 PlotOrientation.VERTICAL,
                 true,
@@ -72,7 +71,7 @@ public class IncomeChart {
     public void generateChart() {
         IncomeModel income = incomeService.getLatestIncome();
         DefaultPieDataset pieDataset = new DefaultPieDataset();
-        if(income!=null) {
+        if (income != null) {
             if (income.getSalary() != null) {
                 pieDataset.setValue("Salary", income.getSalary());
             }
@@ -93,11 +92,11 @@ public class IncomeChart {
             }
         }
         JFreeChart chart = ChartFactory.createPieChart
-                ("Income", // Title
-                        pieDataset, // Dataset
-                        true, // Show legend
-                        true, // Use tooltips
-                        false // Configure chart to generate URLs?
+                ("Income",
+                        pieDataset,
+                        true,
+                        true,
+                        false
                 );
         try {
             ChartUtilities.saveChartAsJPEG(new File("src/main/resources/charts/income-chart.jpg"), chart, 500, 300);

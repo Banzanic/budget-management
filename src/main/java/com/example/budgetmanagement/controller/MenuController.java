@@ -1,5 +1,6 @@
 package com.example.budgetmanagement.controller;
 
+import com.example.budgetmanagement.charts.SavingsChart;
 import com.example.budgetmanagement.charts.ExpensesChart;
 import com.example.budgetmanagement.charts.IncomeChart;
 import com.example.budgetmanagement.model.ExpensesModel;
@@ -29,6 +30,9 @@ public class MenuController {
     @Autowired
     private ExpensesChart expensesChart;
 
+    @Autowired
+    private SavingsChart savingsChart;
+
     @GetMapping("/")
     public String startApplication(Model model) {
         model.addAttribute("expensesModel", new ExpensesModel());
@@ -53,6 +57,7 @@ public class MenuController {
     public String getFunctionality(Model model) {
         model.addAttribute("expensesModel", new ExpensesModel());
         model.addAttribute("incomeModel", new IncomeModel());
+
         model.addAttribute("currentYear", Integer.toString(LocalDate.now().getYear()));
         model.addAttribute("currentMonth", LocalDate.now().getMonth());
 
@@ -74,7 +79,9 @@ public class MenuController {
     }
 
     @GetMapping("/savings")
-    public String getSavings(Model model){
+    public String getSavings(){
+        savingsChart.generateBarChartYear();
+        savingsChart.generateBarChartMonth();
         return "savings";
     }
 
