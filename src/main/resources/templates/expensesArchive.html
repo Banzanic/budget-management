@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Expenses Archive</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<div class="container mt-5">
+    <h2>Expenses archive</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Groceries</th>
+            <th>Rent</th>
+            <th>Transportation</th>
+            <th>Subscriptions</th>
+            <th>Health care</th>
+            <th>Entertainment</th>
+            <th>Debt</th>
+            <th>Total Expenses</th>
+            <th>Year</th>
+            <th>Month</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="expense : ${expenses}">
+            <td th:text="${expense.groceries}"></td>
+            <td th:text="${expense.rent}"></td>
+            <td th:text="${expense.transportation}"></td>
+            <td th:text="${expense.subscriptions}"></td>
+            <td th:text="${expense.healthCare}"></td>
+            <td th:text="${expense.entertainment}"></td>
+            <td th:text="${expense.debt}"></td>
+            <td th:text="${expense.totalExpense}"></td>
+            <td th:text="${expense.year}"></td>
+            <td th:text="${expense.month}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

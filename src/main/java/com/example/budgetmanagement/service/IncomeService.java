@@ -6,7 +6,10 @@ import com.example.budgetmanagement.repository.IncomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class IncomeService {
@@ -21,6 +24,53 @@ public class IncomeService {
 
     public List<IncomeModel> getIncome() {
         return (List<IncomeModel>) incomeRepository.findAll();
+    }
+
+    public Integer getLatestYear(){
+        List<IncomeModel> incomes = getIncome();
+        Integer year = 2010;
+        for(IncomeModel income : incomes){
+            if(income.getYear()>year){
+                year=income.getYear();
+            }
+        }
+        return year;
+    }
+
+    public Map<Integer, Integer> getYearlyIncomeSums(){
+        List<IncomeModel> incomes = getIncome();
+        Map<Integer, Integer> yearlyIncomes = new LinkedHashMap<>();
+        for(int i = 2010; i<=2024;i++){
+            yearlyIncomes.put(i, 0);
+        }
+        for(IncomeModel income : incomes){
+            Integer year = income.getYear();
+            int existingIncome = yearlyIncomes.get(year);
+            int newIncome = existingIncome + income.getTotalIncome();
+            yearlyIncomes.put(year, newIncome);
+        }
+        return yearlyIncomes;
+    }
+
+    public Map<String, Integer> getMonthlyIncomeSumsByYear(Integer year){
+        List<IncomeModel> incomes = getIncome();
+        Map<String, Integer> monthlyIncomes = new LinkedHashMap<>();
+        for(int i =1;i <=12;i++){
+            monthlyIncomes.put(String.valueOf(i), 0);
+        }
+        for(IncomeModel income : incomes){
+            if(income.getYear().equals(year)){
+                String month = income.getMonth();
+                if(!monthlyIncomes.containsKey(month)){
+                    monthlyIncomes.put(month, 0);
+                }
+                int existingIncome = monthlyIncomes.get(month);
+                int newIncome = existingIncome + income.getTotalIncome();
+                monthlyIncomes.put(month, newIncome);
+            }
+        }
+        return monthlyIncomes;
+
     }
 
     public IncomeModel updateIncome(IncomeModel incomeModel, Long incomeId) {

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @Entity
@@ -20,6 +22,17 @@ public class IncomeModel {
     private Integer sales;
     @Column(name = "y")
     private Integer year;
-    @Column(name = "m")
+    @Column(name = "m", columnDefinition = "VARCHAR(255)")
     private String month;
+
+    public int getTotalIncome(){
+        int totalIncome = 0;
+        totalIncome+= Objects.requireNonNullElse(salary, 0);
+        totalIncome+= Objects.requireNonNullElse(investment, 0);
+        totalIncome+= Objects.requireNonNullElse(gift, 0);
+        totalIncome+= Objects.requireNonNullElse(interest, 0);
+        totalIncome+= Objects.requireNonNullElse(rental, 0);
+        totalIncome+= Objects.requireNonNullElse(sales, 0);
+        return totalIncome;
+    }
 }
