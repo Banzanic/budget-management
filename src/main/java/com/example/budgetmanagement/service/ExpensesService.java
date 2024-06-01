@@ -26,6 +26,17 @@ public class ExpensesService {
         return (List<ExpensesModel>) expensesRepository.findAll();
     }
 
+    public ExpensesModel getLatestExpense(){
+        List<ExpensesModel> expenses = getExpenses();
+        ExpensesModel expensesModel = null;
+        for(ExpensesModel expense : expenses){
+            if(expensesModel == null || expense.getYear()>expensesModel.getYear() || (expense.getYear().equals(expensesModel.getYear()) && Integer.parseInt(expense.getMonth())>Integer.parseInt(expensesModel.getMonth()))){
+                expensesModel = expense;
+            }
+        }
+        return expensesModel;
+    }
+
     public Integer getLatestYear(){
         List<ExpensesModel> expenses = getExpenses();
         Integer year = 2010;

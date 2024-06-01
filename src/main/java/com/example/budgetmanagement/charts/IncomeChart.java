@@ -70,15 +70,28 @@ public class IncomeChart {
     }
 
     public void generateChart() {
-        List<IncomeModel> incomes = incomeService.getIncome();
-        IncomeModel income = incomes.get(0);
+        IncomeModel income = incomeService.getLatestIncome();
         DefaultPieDataset pieDataset = new DefaultPieDataset();
-        pieDataset.setValue("Salary", income.getSalary());
-        pieDataset.setValue("Investment", income.getInvestment());
-        pieDataset.setValue("Gift", income.getGift());
-        pieDataset.setValue("Interest", income.getInterest());
-        pieDataset.setValue("Rental", income.getRental());
-        pieDataset.setValue("Sales", income.getSales());
+        if(income!=null) {
+            if (income.getSalary() != null) {
+                pieDataset.setValue("Salary", income.getSalary());
+            }
+            if (income.getInvestment() != null) {
+                pieDataset.setValue("Investment", income.getInvestment());
+            }
+            if (income.getGift() != null) {
+                pieDataset.setValue("Gift", income.getGift());
+            }
+            if (income.getInterest() != null) {
+                pieDataset.setValue("Interest", income.getInterest());
+            }
+            if (income.getRental() != null) {
+                pieDataset.setValue("Rental", income.getRental());
+            }
+            if (income.getSales() != null) {
+                pieDataset.setValue("Sales", income.getSales());
+            }
+        }
         JFreeChart chart = ChartFactory.createPieChart
                 ("Income", // Title
                         pieDataset, // Dataset

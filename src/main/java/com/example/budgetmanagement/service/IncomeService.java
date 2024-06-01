@@ -26,6 +26,17 @@ public class IncomeService {
         return (List<IncomeModel>) incomeRepository.findAll();
     }
 
+    public IncomeModel getLatestIncome(){
+        List<IncomeModel> incomes = getIncome();
+        IncomeModel incomeModel = null;
+        for(IncomeModel income : incomes){
+            if(incomeModel == null || income.getYear()>incomeModel.getYear() || (income.getYear().equals(incomeModel.getYear()) && Integer.parseInt(income.getMonth())>Integer.parseInt(incomeModel.getMonth()))){
+                incomeModel = income;
+            }
+        }
+        return incomeModel;
+    }
+
     public Integer getLatestYear(){
         List<IncomeModel> incomes = getIncome();
         Integer year = 2010;

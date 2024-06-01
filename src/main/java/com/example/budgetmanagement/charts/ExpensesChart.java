@@ -72,16 +72,31 @@ public class ExpensesChart {
     }
 
     public void generateChart() {
-        List<ExpensesModel> expenses = expensesService.getExpenses();
-        ExpensesModel expense = expenses.get(0);
+        ExpensesModel expense = expensesService.getLatestExpense();
         DefaultPieDataset pieDataset = new DefaultPieDataset();
-        pieDataset.setValue("groceries", expense.getGroceries());
-        pieDataset.setValue("rent", expense.getRent());
-        pieDataset.setValue("transportation", expense.getTransportation());
-        pieDataset.setValue("subscriptions", expense.getSubscriptions());
-        pieDataset.setValue("health care", expense.getHealthCare());
-        pieDataset.setValue("entertainment", expense.getEntertainment());
-        pieDataset.setValue("debt", expense.getDebt());
+        if(expense!=null) {
+            if (expense.getGroceries() != null) {
+                pieDataset.setValue("groceries", expense.getGroceries());
+            }
+            if (expense.getRent() != null) {
+                pieDataset.setValue("rent", expense.getRent());
+            }
+            if (expense.getTransportation() != null) {
+                pieDataset.setValue("transportation", expense.getTransportation());
+            }
+            if (expense.getSubscriptions() != null) {
+                pieDataset.setValue("subscriptions", expense.getSubscriptions());
+            }
+            if (expense.getHealthCare() != null) {
+                pieDataset.setValue("health care", expense.getHealthCare());
+            }
+            if (expense.getEntertainment() != null) {
+                pieDataset.setValue("entertainment", expense.getEntertainment());
+            }
+            if (expense.getDebt() != null) {
+                pieDataset.setValue("debt", expense.getDebt());
+            }
+        }
         JFreeChart chart = ChartFactory.createPieChart
                 ("Expenses", // Title
                         pieDataset, // Dataset
