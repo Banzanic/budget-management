@@ -71,7 +71,6 @@ public class IncomeChart {
 
     public void generateChart() {
         List<IncomeModel> incomes = incomeService.getIncome();
-        System.out.println(incomeService.getMonthlyIncomeSumsByYear(2014));
         IncomeModel income = incomes.get(0);
         DefaultPieDataset pieDataset = new DefaultPieDataset();
         pieDataset.setValue("Salary", income.getSalary());

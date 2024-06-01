@@ -36,6 +36,7 @@ public class SubmitController {
         expensesService.putExpenses(expensesModel);
         expensesChart.generateBarChartYear();
         expensesChart.generateBarChartMonth();
+        expensesChart.generateChart();
 
         return "functionality";
 
@@ -50,6 +51,7 @@ public class SubmitController {
         incomeService.putIncome(incomeModel);
         incomeChart.generateBarChartYear();
         incomeChart.generateBarChartMonth();
+        incomeChart.generateChart();
         return "functionality";
     }
 }
