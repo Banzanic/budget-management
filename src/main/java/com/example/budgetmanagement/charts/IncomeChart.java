@@ -66,7 +66,7 @@ public class IncomeChart {
                 false
         );
         try {
-            ChartUtilities.saveChartAsJPEG(new File("src/main/resources/charts/monthly-income-chart.jpg"), chart, 500, 300);
+            ChartUtilities.saveChartAsJPEG(new File("src/main/resources/charts/monthly-income-chart.jpg"), chart, 700, 400);
             System.out.println("Chart Updated");
         } catch (Exception e) {
             System.out.println("Problem occurred creating chart.");
