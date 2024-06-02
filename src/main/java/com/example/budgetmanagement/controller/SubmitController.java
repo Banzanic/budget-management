@@ -15,6 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Locale;
+
 @Controller
 public class SubmitController {
 
@@ -35,10 +40,10 @@ public class SubmitController {
 
     @PostMapping("/submitExpenses")
     public String submitExpenses(@ModelAttribute("expensesModel") ExpensesModel expensesModel, Model model) {
-        if(model.getAttribute("incomeModel")==null) {
+        if (model.getAttribute("incomeModel") == null) {
             model.addAttribute("incomeModel", new IncomeModel());
         }
-        if(model.getAttribute("savingsGoalModel")==null){
+        if (model.getAttribute("savingsGoalModel") == null) {
             model.addAttribute("savingsGoalModel", new SavingsGoalModel());
         }
         System.out.println("Groceries: " + expensesModel.getGroceries() + ", Rent: " + expensesModel.getRent() + ", Transportation: " + expensesModel.getTransportation() + ", Subscriptions: " + expensesModel.getSubscriptions() + ", Health care: " + expensesModel.getHealthCare() + ", Entertainment: " + expensesModel.getEntertainment() + ", Debt: " + expensesModel.getDebt() + ", Year: " + expensesModel.getYear() + ", Month: " + expensesModel.getMonth());
@@ -53,10 +58,10 @@ public class SubmitController {
 
     @PostMapping("/submitIncome")
     public String submitIncome(@ModelAttribute("incomeModel") IncomeModel incomeModel, Model model) {
-        if(model.getAttribute("expensesModel")==null) {
+        if (model.getAttribute("expensesModel") == null) {
             model.addAttribute("expensesModel", new ExpensesModel());
         }
-        if(model.getAttribute("savingsGoalModel")==null){
+        if (model.getAttribute("savingsGoalModel") == null) {
             model.addAttribute("savingsGoalModel", new SavingsGoalModel());
         }
         System.out.println("Groceries: " + incomeModel.getSalary() + ", Investment: " + incomeModel.getInvestment() + ", Gift: " + incomeModel.getGift() + ", Interest: " + incomeModel.getInterest() + ", Rental: " + incomeModel.getRental() + ", Sales: " + incomeModel.getSales() + ", Year: " + incomeModel.getYear() + ", Month: " + incomeModel.getMonth());
@@ -73,16 +78,39 @@ public class SubmitController {
         System.out.println("GoalName: " + savingsGoalModel.getGoalName() + ", GoalAmount: " + savingsGoalModel.getGoalAmount());
         savingsGoalModel.setSavedAmount(savingsService.getSummedSavings());
         double progressPercentage = 0;
-        if(savingsGoalModel.getGoalAmount()!=null && savingsGoalModel.getGoalAmount()!=0) {
+        double monthlySavings = 1;
+        String estimatedGoalDate = "";
+        if (savingsGoalModel.getGoalAmount() != null && savingsGoalModel.getGoalAmount() != 0) {
             progressPercentage = (savingsService.getSummedSavings() * 100) / savingsGoalModel.getGoalAmount();
+            monthlySavings = savingsService.getAverageMonthlySavings();
+            estimatedGoalDate = getEstimatedGoalDate(savingsGoalModel, monthlySavings);
+
             model.addAttribute("progressPercentage", progressPercentage);
+            model.addAttribute("averageMonthlySavings", monthlySavings);
+            model.addAttribute("estimatedGoalDate", estimatedGoalDate);
         } else {
             model.addAttribute("progressPercentage", progressPercentage);
+            model.addAttribute("averageMonthlySavings", monthlySavings);
+            model.addAttribute("estimatedGoalDate", estimatedGoalDate);
         }
+        System.out.println("monthly savings: " + monthlySavings);
+
         savingsService.putSavingsGoal(savingsGoalModel);
         session.setAttribute("savingsGoalModel", savingsGoalModel);
 
-
         return "savings";
+    }
+
+    private String getEstimatedGoalDate(SavingsGoalModel savingsGoalModel, double monthlySavings) {
+        int remainingAmount = savingsGoalModel.getGoalAmount() - savingsService.getSummedSavings();
+
+        double monthsToGoal = Math.ceil(remainingAmount / monthlySavings);
+
+        LocalDate currentDate = LocalDate.now();
+        LocalDate goalDate = currentDate.plus((long) monthsToGoal, ChronoUnit.MONTHS);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH);
+
+        return goalDate.format(formatter);
     }
 }

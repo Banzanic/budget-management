@@ -16,8 +16,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class MenuController {
@@ -105,22 +108,31 @@ public class MenuController {
 
         SavingsGoalModel savingsGoalModel = (SavingsGoalModel) model.getAttribute("savingsGoalModel");
         savingsGoalModel.setSavedAmount(savingsService.getSummedSavings());
-        double progressPercentage = 0;
 
-        if(savingsGoalModel.getGoalAmount()!=null && savingsGoalModel.getGoalAmount()!=0) {
+        double progressPercentage = 0;
+        double monthlySavings = 1;
+        String estimatedGoalDate = "";
+        if (savingsGoalModel.getGoalAmount() != null && savingsGoalModel.getGoalAmount() != 0) {
             progressPercentage = (savingsService.getSummedSavings() * 100) / savingsGoalModel.getGoalAmount();
+            monthlySavings = savingsService.getAverageMonthlySavings();
+            estimatedGoalDate = getEstimatedGoalDate(savingsGoalModel, monthlySavings);
+
             model.addAttribute("progressPercentage", progressPercentage);
+            model.addAttribute("averageMonthlySavings", monthlySavings);
+            model.addAttribute("estimatedGoalDate", estimatedGoalDate);
         } else {
             model.addAttribute("progressPercentage", progressPercentage);
+            model.addAttribute("averageMonthlySavings", monthlySavings);
+            model.addAttribute("estimatedGoalDate", estimatedGoalDate);
         }
         model.addAttribute("savingsGoalModel", savingsGoalModel);
         savingsChart.generateBarChartYear();
         savingsChart.generateBarChartMonth();
 
-        System.out.println(savingsGoalModel.getGoalName());
-        System.out.println(savingsGoalModel.getGoalAmount());
-        System.out.println(savingsGoalModel.getSavedAmount());
-        System.out.println(progressPercentage);
+        System.out.println("Goal Name:" + savingsGoalModel.getGoalName());
+        System.out.println("Goal Amount" + savingsGoalModel.getGoalAmount());
+        System.out.println("Saved amount" + savingsGoalModel.getSavedAmount());
+        System.out.println("Progress Percentage" + progressPercentage);
 
         return "savings";
     }
@@ -133,5 +145,18 @@ public class MenuController {
     @GetMapping("/settings")
     public String getSettings() {
         return "settings";
+    }
+
+    private String getEstimatedGoalDate(SavingsGoalModel savingsGoalModel, double monthlySavings) {
+        int remainingAmount = savingsGoalModel.getGoalAmount() - savingsService.getSummedSavings();
+
+        double monthsToGoal = Math.ceil(remainingAmount / monthlySavings);
+
+        LocalDate currentDate = LocalDate.now();
+        LocalDate goalDate = currentDate.plus((long) monthsToGoal, ChronoUnit.MONTHS);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH);
+
+        return goalDate.format(formatter);
     }
 }

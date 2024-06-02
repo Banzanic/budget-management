@@ -43,6 +43,10 @@
                                     <input type="number" class="form-control" id="goal-amount" placeholder="Enter amount"
                                            th:field="*{goalAmount}">
                                 </div>
+                                <div class="mb-3">
+                                    <label for="desired-date" class="form-label">Desired Goal Date</label>
+                                    <input type="month" class="form-control" id="desired-date" th:field="*{desiredDate}">
+                                </div>
                                 <button type="submit" class="btn btn-primary">Add Savings</button>
                             </form>
 
@@ -54,6 +58,14 @@
                                          th:style="'width:' + ${progressPercentage} + '%;'"
                                          th:attr="aria-valuenow=${progressPercentage}" aria-valuemin="0" aria-valuemax="100"
                                          th:text="${progressPercentage} + '%'"></div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <div>Average Monthly Savings: <span th:text="${#numbers.formatDecimal(averageMonthlySavings, 2, 2)}"></span></div>
+                                    <div>Estimated Goal Achievement Date: <span th:text="${estimatedGoalDate}"></span></div>
+                                    <div th:if="${requiredMonthlySavings}">
+                                        <div>Required Monthly Savings: <span th:text="${#numbers.formatDecimal(requiredMonthlySavings, 2, 2)}"></span></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
