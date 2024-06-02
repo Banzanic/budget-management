@@ -1,12 +1,8 @@
 package com.example.budgetmanagement.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
@@ -19,5 +15,9 @@ public class SavingsGoalModel {
     private String goalName;
     private Integer goalAmount;
     private Integer savedAmount;
+    @Column(name = "y")
+    private Integer yearDesiredDate;
+    @Column(name = "m")
+    private String monthDesiredDate;
 
 }
