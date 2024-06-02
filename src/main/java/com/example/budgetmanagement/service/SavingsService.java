@@ -1,5 +1,9 @@
 package com.example.budgetmanagement.service;
 
+import com.example.budgetmanagement.model.IncomeModel;
+import com.example.budgetmanagement.model.SavingsGoalModel;
+import com.example.budgetmanagement.repository.IncomeRepository;
+import com.example.budgetmanagement.repository.SavingsGoalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +15,25 @@ import java.util.Objects;
 public class SavingsService {
 
     @Autowired
+    private SavingsGoalRepository savingsGoalRepository;
+
+    @Autowired
     private ExpensesService expensesService;
 
     @Autowired
     private IncomeService incomeService;
+
+    public Integer getSummedSavings() {
+        Map<Integer, Integer> savings = getYearlySavings();
+        Integer summedSavings = 0;
+        for(Map.Entry<Integer, Integer> entry : savings.entrySet()){
+            summedSavings+=entry.getValue();
+        }
+        return summedSavings;
+    }
+    public SavingsGoalModel putSavingsGoal(SavingsGoalModel savingsGoalModel) {
+        return savingsGoalRepository.save(savingsGoalModel);
+    }
 
     public Map<Integer, Integer> getYearlySavings() {
         Map<Integer, Integer> yearlyExpenseSums = expensesService.getYearlyExpenseSums();

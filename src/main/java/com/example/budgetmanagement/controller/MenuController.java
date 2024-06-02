@@ -8,6 +8,8 @@ import com.example.budgetmanagement.model.IncomeModel;
 import com.example.budgetmanagement.model.SavingsGoalModel;
 import com.example.budgetmanagement.service.ExpensesService;
 import com.example.budgetmanagement.service.IncomeService;
+import com.example.budgetmanagement.service.SavingsService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,9 @@ public class MenuController {
     private ExpensesService expensesService;
 
     @Autowired
+    private SavingsService savingsService;
+
+    @Autowired
     private IncomeChart incomeChart;
 
     @Autowired
@@ -40,6 +45,7 @@ public class MenuController {
         model.addAttribute("incomeModel", new IncomeModel());
         model.addAttribute("currentYear", Integer.toString(LocalDate.now().getYear()));
         model.addAttribute("currentMonth", LocalDate.now().getMonth());
+        model.addAttribute("savingsGoalModel",new SavingsGoalModel());
         incomeChart.generateBarChartYear();
         incomeChart.generateBarChartMonth();
         incomeChart.generateChart();
@@ -82,10 +88,29 @@ public class MenuController {
     }
 
     @GetMapping("/savings")
-    public String getSavings(Model model){
-        model.addAttribute("savingsGoalModel", new SavingsGoalModel());
+    public String getSavings(HttpSession session, Model model){
+        SavingsGoalModel currentSavingsGoal = (SavingsGoalModel) session.getAttribute("savingsGoalModel");
+        model.addAttribute("savingsGoalModel", currentSavingsGoal!=null? currentSavingsGoal : new SavingsGoalModel());
+
+        SavingsGoalModel savingsGoalModel = (SavingsGoalModel) model.getAttribute("savingsGoalModel");
+        savingsGoalModel.setSavedAmount(savingsService.getSummedSavings());
+        double progressPercentage = 0;
+
+        if(savingsGoalModel.getGoalAmount()!=null && savingsGoalModel.getGoalAmount()!=0) {
+            progressPercentage = (savingsService.getSummedSavings() * 100) / savingsGoalModel.getGoalAmount();
+            model.addAttribute("progressPercentage", progressPercentage);
+        } else {
+            model.addAttribute("progressPercentage", progressPercentage);
+        }
+        model.addAttribute("savingsGoalModel", savingsGoalModel);
         savingsChart.generateBarChartYear();
         savingsChart.generateBarChartMonth();
+
+        System.out.println(savingsGoalModel.getGoalName());
+        System.out.println(savingsGoalModel.getGoalAmount());
+        System.out.println(savingsGoalModel.getSavedAmount());
+        System.out.println(progressPercentage);
+
         return "savings";
     }
 

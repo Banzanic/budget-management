@@ -7,6 +7,8 @@ import com.example.budgetmanagement.model.IncomeModel;
 import com.example.budgetmanagement.model.SavingsGoalModel;
 import com.example.budgetmanagement.service.ExpensesService;
 import com.example.budgetmanagement.service.IncomeService;
+import com.example.budgetmanagement.service.SavingsService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,12 +31,15 @@ public class SubmitController {
     private ExpensesChart expensesChart;
 
     @Autowired
-    private SavingsGoalModel savingsGoal;
+    private SavingsService savingsService;
 
     @PostMapping("/submitExpenses")
     public String submitExpenses(@ModelAttribute("expensesModel") ExpensesModel expensesModel, Model model) {
         if(model.getAttribute("incomeModel")==null) {
             model.addAttribute("incomeModel", new IncomeModel());
+        }
+        if(model.getAttribute("savingsGoalModel")==null){
+            model.addAttribute("savingsGoalModel", new SavingsGoalModel());
         }
         System.out.println("Groceries: " + expensesModel.getGroceries() + ", Rent: " + expensesModel.getRent() + ", Transportation: " + expensesModel.getTransportation() + ", Subscriptions: " + expensesModel.getSubscriptions() + ", Health care: " + expensesModel.getHealthCare() + ", Entertainment: " + expensesModel.getEntertainment() + ", Debt: " + expensesModel.getDebt() + ", Year: " + expensesModel.getYear() + ", Month: " + expensesModel.getMonth());
         expensesService.putExpenses(expensesModel);
@@ -51,6 +56,9 @@ public class SubmitController {
         if(model.getAttribute("expensesModel")==null) {
             model.addAttribute("expensesModel", new ExpensesModel());
         }
+        if(model.getAttribute("savingsGoalModel")==null){
+            model.addAttribute("savingsGoalModel", new SavingsGoalModel());
+        }
         System.out.println("Groceries: " + incomeModel.getSalary() + ", Investment: " + incomeModel.getInvestment() + ", Gift: " + incomeModel.getGift() + ", Interest: " + incomeModel.getInterest() + ", Rental: " + incomeModel.getRental() + ", Sales: " + incomeModel.getSales() + ", Year: " + incomeModel.getYear() + ", Month: " + incomeModel.getMonth());
         incomeService.putIncome(incomeModel);
         incomeChart.generateBarChartYear();
@@ -60,17 +68,11 @@ public class SubmitController {
     }
 
     @PostMapping("/setSavingsGoal")
-    public String setSavingsGoal(@ModelAttribute("savingsGoalModel") SavingsGoalModel savingsGoalModel, Model model) {
+    public String setSavingsGoal(@ModelAttribute("savingsGoalModel") SavingsGoalModel savingsGoalModel, HttpSession session) {
+        System.out.println(savingsService);
         System.out.println("GoalName: " + savingsGoalModel.getGoalName() + ", GoalAmount: " + savingsGoalModel.getGoalAmount());
-        savingsGoal.setGoalName(savingsGoalModel.getGoalName());
-        savingsGoal.setGoalAmount(savingsGoalModel.getGoalAmount());
-
-        int savedAmount = 10;  // zmienić to
-        double progressPercentage = (savedAmount  * 100) / savingsGoalModel.getGoalAmount();
-        System.out.println("ProgressPercentage: " + progressPercentage);
-
-        model.addAttribute("savingsGoalModel", savingsGoalModel);
-        model.addAttribute("progressPercentage", progressPercentage);
+        savingsService.putSavingsGoal(savingsGoalModel);
+        session.setAttribute("savingsGoalModel", savingsGoalModel);
 
         return "savings";
     }
