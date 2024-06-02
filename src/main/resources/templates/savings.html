@@ -6,10 +6,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <style>
         .custom-container {
-            display: inline-block;
-            flex-wrap: wrap; /* Allow items to wrap onto the next line */
+            display: flex;
+            flex-wrap: wrap;
             margin-left: 5px;
             margin-right: auto;
+        }
+        .chart-container {
+            flex: 1;
+        }
+        .form-container {
+            flex: 1;
         }
     </style>
 </head>
@@ -18,74 +24,84 @@
 <nav th:replace="fragments/navbar :: navbar"></nav>
 
 <div class="container custom-container mt-4">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="savings-tab" data-bs-toggle="tab" href="#savings" role="tab"
-                               aria-controls="savings" aria-selected="true">Savings</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-body">
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="savings" role="tabpanel" aria-labelledby="savings-tab">
-                            <form id="form1" th:action="@{/setSavingsGoal}" th:object="${savingsGoalModel}" method="post">
-                                <div class="mb-3">
-                                    <label for="goal-name" class="form-label">Goal name</label>
-                                    <input type="text" class="form-control" id="goal-name" placeholder="Enter name"
-                                           th:field="*{goalName}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="goal-amount" class="form-label">Goal Amount</label>
-                                    <input type="number" class="form-control" id="goal-amount" placeholder="Enter amount"
-                                           th:field="*{goalAmount}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="desired-date" class="form-label">Desired Goal Date</label>
-                                    <input type="month" class="form-control" id="desired-date" th:field="*{desiredDate}">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Add Savings</button>
-                            </form>
+    <div class="form-container">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="savings-tab" data-bs-toggle="tab" href="#savings" role="tab"
+                           aria-controls="savings" aria-selected="true">Savings</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="savings" role="tabpanel" aria-labelledby="savings-tab">
+                        <form id="form1" th:action="@{/setSavingsGoal}" th:object="${savingsGoalModel}" method="post">
+                            <div class="mb-3">
+                                <label for="goal-name" class="form-label">Goal name</label>
+                                <input type="text" class="form-control" id="goal-name" placeholder="Enter name"
+                                       th:field="*{goalName}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="goal-amount" class="form-label">Goal Amount</label>
+                                <input type="number" class="form-control" id="goal-amount" placeholder="Enter amount"
+                                       th:field="*{goalAmount}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="year" class="form-label">Goal Desired Date - Year</label>
+                                <select class="form-select" id="year" th:field="*{yearDesiredDate}">
+                                    <option th:each="year : ${#numbers.sequence(2024, 2010)}"
+                                            th:value="${year}"
+                                            th:text="${year}"
+                                            th:selected="2024"></option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="month" class="form-label">Goal Desired Date - Month</label>
+                                <select class="form-select" id="month" th:field="*{monthDesiredDate}">
+                                    <option th:each="month, iterStat : ${T(java.time.Month).values()}"
+                                            th:value="${iterStat.index + 1}"
+                                            th:text="${month}"
+                                            th:selected="${iterStat.index + 1 == currentMonth}">Choose...</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Savings Goal</button>
+                        </form>
 
-                            <div class="mt-4" th:if="${savingsGoalModel.goalName}">
-                                <div id="goal-name-display">Goal: <span th:text="${savingsGoalModel.goalName}"></span></div>
+                        <div class="mt-4" th:if="${savingsGoalModel.goalName}">
+                            <div id="goal-name-display">Goal: <span th:text="${savingsGoalModel.goalName}"></span></div>
 
-                                <div class="progress mt-2">
-                                    <div id="progress-bar" class="progress-bar" role="progressbar"
-                                         th:style="'width:' + ${progressPercentage} + '%;'"
-                                         th:attr="aria-valuenow=${progressPercentage}" aria-valuemin="0" aria-valuemax="100"
-                                         th:text="${progressPercentage} + '%'"></div>
-                                </div>
+                            <div class="progress mt-2">
+                                <div id="progress-bar" class="progress-bar" role="progressbar"
+                                     th:style="'width:' + ${progressPercentage} + '%;'"
+                                     th:attr="aria-valuenow=${progressPercentage}" aria-valuemin="0" aria-valuemax="100"
+                                     th:text="${progressPercentage} + '%'"></div>
+                            </div>
 
-                                <div class="mt-4">
-                                    <div>Average Monthly Savings: <span th:text="${#numbers.formatDecimal(averageMonthlySavings, 2, 2)}"></span></div>
-                                    <div>Estimated Goal Achievement Date: <span th:text="${estimatedGoalDate}"></span></div>
-                                    <div th:if="${requiredMonthlySavings}">
-                                        <div>Required Monthly Savings: <span th:text="${#numbers.formatDecimal(requiredMonthlySavings, 2, 2)}"></span></div>
-                                    </div>
-                                </div>
+                            <div class="mt-4">
+                                <div>Average Monthly Savings: <span th:text="${#numbers.formatDecimal(averageMonthlySavings, 2, 2)}"></span></div>
+                                <div>Estimated Goal Achievement Date: <span th:text="${estimatedGoalDate}"></span></div>
+                                <div>Required Monthly Savings: <span th:text="${#numbers.formatDecimal(requiredMonthlySavings, 2, 2)}"></span></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-5">
-            <div class="row">
-                <div class="col-12 mb-4">
-                    <img src="/charts/monthly-savings-chart.jpg" class="img-fluid">
-                </div>
-                <div class="col-12 mb-4">
-                    <img src="/charts/yearly-savings-chart.jpg" class="img-fluid">
-                </div>
+    </div>
+    <div class="chart-container">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <img src="/charts/monthly-savings-chart.jpg" class="img-fluid">
+            </div>
+            <div class="col-12 mb-4">
+                <img src="/charts/yearly-savings-chart.jpg" class="img-fluid">
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

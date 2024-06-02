@@ -80,18 +80,22 @@ public class SubmitController {
         double progressPercentage = 0;
         double monthlySavings = 1;
         String estimatedGoalDate = "";
+        double requiredMonthlySavings = 1;
         if (savingsGoalModel.getGoalAmount() != null && savingsGoalModel.getGoalAmount() != 0) {
             progressPercentage = (savingsService.getSummedSavings() * 100) / savingsGoalModel.getGoalAmount();
             monthlySavings = savingsService.getAverageMonthlySavings();
             estimatedGoalDate = getEstimatedGoalDate(savingsGoalModel, monthlySavings);
+            requiredMonthlySavings = (savingsGoalModel.getGoalAmount() - savingsService.getSummedSavings()) / 12;
 
             model.addAttribute("progressPercentage", progressPercentage);
             model.addAttribute("averageMonthlySavings", monthlySavings);
             model.addAttribute("estimatedGoalDate", estimatedGoalDate);
+            model.addAttribute("requiredMonthlySavings", requiredMonthlySavings);
         } else {
             model.addAttribute("progressPercentage", progressPercentage);
             model.addAttribute("averageMonthlySavings", monthlySavings);
             model.addAttribute("estimatedGoalDate", estimatedGoalDate);
+            model.addAttribute("requiredMonthlySavings", requiredMonthlySavings);
         }
         System.out.println("monthly savings: " + monthlySavings);
 

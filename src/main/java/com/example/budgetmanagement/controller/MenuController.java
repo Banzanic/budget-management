@@ -1,8 +1,8 @@
 package com.example.budgetmanagement.controller;
 
-import com.example.budgetmanagement.charts.SavingsChart;
 import com.example.budgetmanagement.charts.ExpensesChart;
 import com.example.budgetmanagement.charts.IncomeChart;
+import com.example.budgetmanagement.charts.SavingsChart;
 import com.example.budgetmanagement.model.ExpensesModel;
 import com.example.budgetmanagement.model.IncomeModel;
 import com.example.budgetmanagement.model.SavingsGoalModel;
@@ -49,7 +49,7 @@ public class MenuController {
         model.addAttribute("incomeModel", new IncomeModel());
         model.addAttribute("currentYear", Integer.toString(LocalDate.now().getYear()));
         model.addAttribute("currentMonth", LocalDate.now().getMonth());
-        model.addAttribute("savingsGoalModel",new SavingsGoalModel());
+        model.addAttribute("savingsGoalModel", new SavingsGoalModel());
         incomeChart.generateBarChartYear();
         incomeChart.generateBarChartMonth();
         incomeChart.generateChart();
@@ -78,33 +78,35 @@ public class MenuController {
     }
 
     @GetMapping("/expensesArchive")
-    public String getExpensesArchive(Model model){
+    public String getExpensesArchive(Model model) {
         List<ExpensesModel> archivedExpenses = expensesService.getExpenses();
         archivedExpenses.sort(Collections.reverseOrder());
 
         model.addAttribute("expenses", archivedExpenses);
-        String[] monthNames = {"","January", "February", "March", "April", "May", "June",
+        String[] monthNames = {"", "January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"};
         model.addAttribute("monthNames", monthNames);
         return "expensesArchive";
     }
 
     @GetMapping("/incomeArchive")
-    public String getIncomeArchive(Model model){
+    public String getIncomeArchive(Model model) {
         List<IncomeModel> archivedIncomes = incomeService.getIncome();
         archivedIncomes.sort(Collections.reverseOrder());
 
         model.addAttribute("incomes", archivedIncomes);
-        String[] monthNames = {"","January", "February", "March", "April", "May", "June",
+        String[] monthNames = {"", "January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"};
         model.addAttribute("monthNames", monthNames);
         return "incomeArchive";
     }
 
     @GetMapping("/savings")
-    public String getSavings(HttpSession session, Model model){
+    public String getSavings(HttpSession session, Model model) {
         SavingsGoalModel currentSavingsGoal = (SavingsGoalModel) session.getAttribute("savingsGoalModel");
-        model.addAttribute("savingsGoalModel", currentSavingsGoal!=null? currentSavingsGoal : new SavingsGoalModel());
+        model.addAttribute("savingsGoalModel", currentSavingsGoal != null ? currentSavingsGoal : new SavingsGoalModel());
+        model.addAttribute("currentYear", Integer.toString(LocalDate.now().getYear()));
+        model.addAttribute("currentMonth", LocalDate.now().getMonth());
 
         SavingsGoalModel savingsGoalModel = (SavingsGoalModel) model.getAttribute("savingsGoalModel");
         savingsGoalModel.setSavedAmount(savingsService.getSummedSavings());
@@ -112,27 +114,32 @@ public class MenuController {
         double progressPercentage = 0;
         double monthlySavings = 1;
         String estimatedGoalDate = "";
+        double requiredMonthlySavings = 1;
         if (savingsGoalModel.getGoalAmount() != null && savingsGoalModel.getGoalAmount() != 0) {
             progressPercentage = (savingsService.getSummedSavings() * 100) / savingsGoalModel.getGoalAmount();
             monthlySavings = savingsService.getAverageMonthlySavings();
             estimatedGoalDate = getEstimatedGoalDate(savingsGoalModel, monthlySavings);
+            requiredMonthlySavings = (savingsGoalModel.getGoalAmount() - savingsService.getSummedSavings()) / 12;
 
             model.addAttribute("progressPercentage", progressPercentage);
             model.addAttribute("averageMonthlySavings", monthlySavings);
             model.addAttribute("estimatedGoalDate", estimatedGoalDate);
+            model.addAttribute("requiredMonthlySavings", requiredMonthlySavings);
         } else {
             model.addAttribute("progressPercentage", progressPercentage);
             model.addAttribute("averageMonthlySavings", monthlySavings);
             model.addAttribute("estimatedGoalDate", estimatedGoalDate);
+            model.addAttribute("requiredMonthlySavings", requiredMonthlySavings);
         }
         model.addAttribute("savingsGoalModel", savingsGoalModel);
         savingsChart.generateBarChartYear();
         savingsChart.generateBarChartMonth();
 
         System.out.println("Goal Name:" + savingsGoalModel.getGoalName());
-        System.out.println("Goal Amount" + savingsGoalModel.getGoalAmount());
-        System.out.println("Saved amount" + savingsGoalModel.getSavedAmount());
-        System.out.println("Progress Percentage" + progressPercentage);
+        System.out.println("Goal Amount: " + savingsGoalModel.getGoalAmount());
+        System.out.println("Saved amount: " + savingsGoalModel.getSavedAmount());
+        System.out.println("Progress Percentage: " + progressPercentage);
+        System.out.println("Required monthly savings: " + requiredMonthlySavings);
 
         return "savings";
     }
