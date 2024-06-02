@@ -9,7 +9,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-public class ExpensesModel {
+public class ExpensesModel implements Comparable<ExpensesModel>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,5 +35,14 @@ public class ExpensesModel {
         totalExpenses+= Objects.requireNonNullElse(entertainment, 0);
         totalExpenses+= Objects.requireNonNullElse(debt, 0);
         return totalExpenses;
+    }
+
+    @Override
+    public int compareTo(ExpensesModel other) {
+        int yearComparison = this.year - other.getYear();
+        if (yearComparison!= 0) {
+            return yearComparison;
+        }
+        return Integer.compare(Integer.parseInt(this.month), Integer.parseInt(other.getMonth()));
     }
 }

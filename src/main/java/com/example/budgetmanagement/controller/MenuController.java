@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -76,6 +77,8 @@ public class MenuController {
     @GetMapping("/expensesArchive")
     public String getExpensesArchive(Model model){
         List<ExpensesModel> archivedExpenses = expensesService.getExpenses();
+        archivedExpenses.sort(Collections.reverseOrder());
+
         model.addAttribute("expenses", archivedExpenses);
         String[] monthNames = {"","January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"};
@@ -86,6 +89,8 @@ public class MenuController {
     @GetMapping("/incomeArchive")
     public String getIncomeArchive(Model model){
         List<IncomeModel> archivedIncomes = incomeService.getIncome();
+        archivedIncomes.sort(Collections.reverseOrder());
+
         model.addAttribute("incomes", archivedIncomes);
         String[] monthNames = {"","January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"};
