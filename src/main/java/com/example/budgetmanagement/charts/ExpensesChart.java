@@ -5,6 +5,8 @@ import com.example.budgetmanagement.service.ExpensesService;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.Map;
 
 @Component
@@ -47,9 +50,11 @@ public class ExpensesChart {
 
     public void generateBarChartMonth() {
         Map<String, Integer> monthlyExpenses = expensesService.getMonthlyExpenseSumsByYear(expensesService.getLatestYear());
+        String[] monthNames = {"","Jan", "Feb", "Mar", "Apr", "May", "June",
+                "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (Map.Entry<String, Integer> entry : monthlyExpenses.entrySet()) {
-            dataset.addValue(entry.getValue(), "Expenses", entry.getKey());
+            dataset.addValue(entry.getValue(), "Expenses", monthNames[Integer.parseInt(entry.getKey())]);
         }
         JFreeChart chart = ChartFactory.createBarChart(
                 "Monthly Expenses",
@@ -102,6 +107,10 @@ public class ExpensesChart {
                         true,
                         false
                 );
+
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} ({1})", new DecimalFormat("#,##0.00"), new DecimalFormat("#,##0.00%")));
+
         try {
             ChartUtilities.saveChartAsJPEG(new File("src/main/resources/charts/expenses-chart.jpg"), chart, 500, 300);
             System.out.println("Chart Updated");

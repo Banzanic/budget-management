@@ -77,6 +77,9 @@ public class MenuController {
     public String getExpensesArchive(Model model){
         List<ExpensesModel> archivedExpenses = expensesService.getExpenses();
         model.addAttribute("expenses", archivedExpenses);
+        String[] monthNames = {"","January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"};
+        model.addAttribute("monthNames", monthNames);
         return "expensesArchive";
     }
 
@@ -84,6 +87,9 @@ public class MenuController {
     public String getIncomeArchive(Model model){
         List<IncomeModel> archivedIncomes = incomeService.getIncome();
         model.addAttribute("incomes", archivedIncomes);
+        String[] monthNames = {"","January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"};
+        model.addAttribute("monthNames", monthNames);
         return "incomeArchive";
     }
 

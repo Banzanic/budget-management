@@ -35,7 +35,7 @@
             <td th:text="${expense.debt}"></td>
             <td th:text="${expense.totalExpense}"></td>
             <td th:text="${expense.year}"></td>
-            <td th:text="${expense.month}"></td>
+            <td th:text="${monthNames[expense.month]}"></td>
         </tr>
         </tbody>
     </table>

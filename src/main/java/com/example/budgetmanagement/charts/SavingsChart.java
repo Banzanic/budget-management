@@ -44,9 +44,11 @@ public class SavingsChart {
 
     public void generateBarChartMonth() {
         Map<String, Integer> monthlySavings = savingsService.getMonthlySavingsByYear();
+        String[] monthNames = {"","Jan", "Feb", "Mar", "Apr", "May", "June",
+                "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (Map.Entry<String, Integer> entry : monthlySavings.entrySet()) {
-            dataset.addValue(entry.getValue(), "Savings", entry.getKey());
+            dataset.addValue(entry.getValue(), "Savings", monthNames[Integer.parseInt(entry.getKey())]);
         }
         JFreeChart chart = ChartFactory.createBarChart(
                 "Monthly Savings",

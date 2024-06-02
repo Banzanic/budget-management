@@ -68,11 +68,20 @@ public class SubmitController {
     }
 
     @PostMapping("/setSavingsGoal")
-    public String setSavingsGoal(@ModelAttribute("savingsGoalModel") SavingsGoalModel savingsGoalModel, HttpSession session) {
+    public String setSavingsGoal(@ModelAttribute("savingsGoalModel") SavingsGoalModel savingsGoalModel, Model model, HttpSession session) {
         System.out.println(savingsService);
         System.out.println("GoalName: " + savingsGoalModel.getGoalName() + ", GoalAmount: " + savingsGoalModel.getGoalAmount());
+        savingsGoalModel.setSavedAmount(savingsService.getSummedSavings());
+        double progressPercentage = 0;
+        if(savingsGoalModel.getGoalAmount()!=null && savingsGoalModel.getGoalAmount()!=0) {
+            progressPercentage = (savingsService.getSummedSavings() * 100) / savingsGoalModel.getGoalAmount();
+            model.addAttribute("progressPercentage", progressPercentage);
+        } else {
+            model.addAttribute("progressPercentage", progressPercentage);
+        }
         savingsService.putSavingsGoal(savingsGoalModel);
         session.setAttribute("savingsGoalModel", savingsGoalModel);
+
 
         return "savings";
     }

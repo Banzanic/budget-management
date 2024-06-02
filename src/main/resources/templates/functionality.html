@@ -129,7 +129,7 @@
                                 <div class="mb-3">
                                     <label for="yearIncome" class="form-label">Year</label>
                                     <select class="form-select" id="yearIncome" th:field="*{year}">
-                                        <option th:each="year : ${#numbers.sequence(2010, 2024)}"
+                                        <option th:each="year : ${#numbers.sequence(2024, 2010)}"
                                                 th:value="${year}"
                                                 th:text="${year}"
                                                 th:selected="${year == currentYear}"></option>
