@@ -112,14 +112,17 @@ public class MenuController {
         savingsGoalModel.setSavedAmount(savingsService.getSummedSavings());
 
         double progressPercentage = 0;
-        double monthlySavings = 1;
+        double monthlySavings = savingsService.getAverageMonthlySavings();
         String estimatedGoalDate = "";
-        double requiredMonthlySavings = 1;
+        double requiredMonthlySavings = 0;
         if (savingsGoalModel.getGoalAmount() != null && savingsGoalModel.getGoalAmount() != 0) {
+            if (monthlySavings > 0) {
+                estimatedGoalDate = getEstimatedGoalDate(savingsGoalModel, monthlySavings);
+            }
+            if (savingsGoalModel.getYearDesiredDate() != null && savingsGoalModel.getMonthDesiredDate() != null) {
+                requiredMonthlySavings = getRequiredMonthlySavings(savingsGoalModel);
+            }
             progressPercentage = (savingsService.getSummedSavings() * 100) / savingsGoalModel.getGoalAmount();
-            monthlySavings = savingsService.getAverageMonthlySavings();
-            estimatedGoalDate = getEstimatedGoalDate(savingsGoalModel, monthlySavings);
-            requiredMonthlySavings = (savingsGoalModel.getGoalAmount() - savingsService.getSummedSavings()) / 12;
 
             model.addAttribute("progressPercentage", progressPercentage);
             model.addAttribute("averageMonthlySavings", monthlySavings);
@@ -165,5 +168,12 @@ public class MenuController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH);
 
         return goalDate.format(formatter);
+    }
+
+    private double getRequiredMonthlySavings(SavingsGoalModel savingsGoalModel) {
+        LocalDate targetDate = LocalDate.of(savingsGoalModel.getYearDesiredDate(), Integer.parseInt(savingsGoalModel.getMonthDesiredDate()), 1);
+        long monthsRemaining = ChronoUnit.MONTHS.between(LocalDate.now().withDayOfMonth(1), targetDate.withDayOfMonth(1));
+
+        return (savingsGoalModel.getGoalAmount() - savingsService.getSummedSavings()) / monthsRemaining;
     }
 }

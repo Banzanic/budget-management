@@ -48,43 +48,48 @@
                                 <input type="number" class="form-control" id="goal-amount" placeholder="Enter amount"
                                        th:field="*{goalAmount}">
                             </div>
-                            <div class="mb-3">
-                                <label for="year" class="form-label">Goal Desired Date - Year</label>
-                                <select class="form-select" id="year" th:field="*{yearDesiredDate}">
-                                    <option th:each="year : ${#numbers.sequence(2024, 2010)}"
-                                            th:value="${year}"
-                                            th:text="${year}"
-                                            th:selected="2024"></option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="month" class="form-label">Goal Desired Date - Month</label>
-                                <select class="form-select" id="month" th:field="*{monthDesiredDate}">
-                                    <option th:each="month, iterStat : ${T(java.time.Month).values()}"
-                                            th:value="${iterStat.index + 1}"
-                                            th:text="${month}"
-                                            th:selected="${iterStat.index + 1 == currentMonth}">Choose...</option>
-                                </select>
-                            </div>
                             <button type="submit" class="btn btn-primary">Add Savings Goal</button>
-                        </form>
+                            <div class="mt-4" th:if="${savingsGoalModel.goalName}">
+                                <div id="goal-name-display">Goal: <span th:text="${savingsGoalModel.goalName}"></span>
+                                </div>
 
-                        <div class="mt-4" th:if="${savingsGoalModel.goalName}">
-                            <div id="goal-name-display">Goal: <span th:text="${savingsGoalModel.goalName}"></span></div>
-
-                            <div class="progress mt-2">
-                                <div id="progress-bar" class="progress-bar" role="progressbar"
-                                     th:style="'width:' + ${progressPercentage} + '%;'"
-                                     th:attr="aria-valuenow=${progressPercentage}" aria-valuemin="0" aria-valuemax="100"
-                                     th:text="${progressPercentage} + '%'"></div>
-                            </div>
-
-                            <div class="mt-4">
-                                <div>Average Monthly Savings: <span th:text="${#numbers.formatDecimal(averageMonthlySavings, 2, 2)}"></span></div>
-                                <div>Estimated Goal Achievement Date: <span th:text="${estimatedGoalDate}"></span></div>
+                                <div class="progress mt-2">
+                                    <div id="progress-bar" class="progress-bar" role="progressbar"
+                                         th:style="'width:' + ${progressPercentage} + '%;'"
+                                         th:attr="aria-valuenow=${progressPercentage}" aria-valuemin="0"
+                                         aria-valuemax="100"
+                                         th:text="${progressPercentage} + '%'"></div>
+                                </div>
+                                <div class="mt-4">
+                                    <div>Average Monthly Savings: <span
+                                            th:text="${#numbers.formatDecimal(averageMonthlySavings, 2, 2)}"></span>
+                                    </div>
+                                    <div>Estimated Goal Achievement Date: <span th:text="${estimatedGoalDate}"></span>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <div class="mb-3">
+                                        <label for="year" class="form-label">Goal Desired Date - Year</label>
+                                        <select class="form-select" id="year" th:field="*{yearDesiredDate}">
+                                            <option th:each="year : ${#numbers.sequence(2050, 2010)}"
+                                                    th:value="${year}"
+                                                    th:text="${year}"
+                                                    th:selected="2024"></option>
+                                        </select>
+                                        <label for="month" class="form-label">Goal Desired Date - Month</label>
+                                        <select class="form-select" id="month" th:field="*{monthDesiredDate}">
+                                            <option th:each="month, iterStat : ${T(java.time.Month).values()}"
+                                                    th:value="${iterStat.index + 1}"
+                                                    th:text="${month}"
+                                                    th:selected="${iterStat.index + 1 == currentMonth}">Choose...
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Add Desired Date</button>
+                                </div>
                                 <div>Required Monthly Savings: <span th:text="${#numbers.formatDecimal(requiredMonthlySavings, 2, 2)}"></span></div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
