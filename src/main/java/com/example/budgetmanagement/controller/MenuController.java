@@ -147,16 +147,6 @@ public class MenuController {
         return "savings";
     }
 
-    @GetMapping("/profile")
-    public String getProfile() {
-        return "profile";
-    }
-
-    @GetMapping("/settings")
-    public String getSettings() {
-        return "settings";
-    }
-
     private String getEstimatedGoalDate(SavingsGoalModel savingsGoalModel, double monthlySavings) {
         int remainingAmount = savingsGoalModel.getGoalAmount() - savingsService.getSummedSavings();
 
