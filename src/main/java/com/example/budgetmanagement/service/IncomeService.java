@@ -82,26 +82,4 @@ public class IncomeService {
         return monthlyIncomes;
 
     }
-
-    public IncomeModel updateIncome(IncomeModel incomeModel, Long incomeId) {
-        IncomeModel depDB = incomeRepository.findById(incomeId).get();
-
-//        if (Objects.nonNull(expensesModel.getExpensesName()) && !"".equalsIgnoreCase(expensesModel.getExpensesName())) {
-//            depDB.setExpensesName(expensesModel.getExpensesName());
-//        }
-//
-//        if (Objects.nonNull(expensesModel.getExpensesAddress()) && !"".equalsIgnoreCase(expensesModel.getExpensesAddress())) {
-//            depDB.setExpensesAddress(expensesModel.getExpensesAddress());
-//        }
-//
-//        if (Objects.nonNull(expensesModel.getExpensesCode()) && !"".equalsIgnoreCase(expensesModeles.getExpensesCode())) {
-//            depDB.setExpensesCode(expensesModel.getExpensesCode());
-//        }
-
-        return incomeRepository.save(depDB);
-    }
-
-    public void deleteIncome(Long incomeId) {
-        incomeRepository.deleteById(incomeId);
-    }
 }

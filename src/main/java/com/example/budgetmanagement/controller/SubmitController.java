@@ -46,7 +46,6 @@ public class SubmitController {
         if (model.getAttribute("savingsGoalModel") == null) {
             model.addAttribute("savingsGoalModel", new SavingsGoalModel());
         }
-        System.out.println("Groceries: " + expensesModel.getGroceries() + ", Rent: " + expensesModel.getRent() + ", Transportation: " + expensesModel.getTransportation() + ", Subscriptions: " + expensesModel.getSubscriptions() + ", Health care: " + expensesModel.getHealthCare() + ", Entertainment: " + expensesModel.getEntertainment() + ", Debt: " + expensesModel.getDebt() + ", Year: " + expensesModel.getYear() + ", Month: " + expensesModel.getMonth());
         expensesService.putExpenses(expensesModel);
         expensesChart.generateBarChartYear();
         expensesChart.generateBarChartMonth();
@@ -64,7 +63,6 @@ public class SubmitController {
         if (model.getAttribute("savingsGoalModel") == null) {
             model.addAttribute("savingsGoalModel", new SavingsGoalModel());
         }
-        System.out.println("Groceries: " + incomeModel.getSalary() + ", Investment: " + incomeModel.getInvestment() + ", Gift: " + incomeModel.getGift() + ", Interest: " + incomeModel.getInterest() + ", Rental: " + incomeModel.getRental() + ", Sales: " + incomeModel.getSales() + ", Year: " + incomeModel.getYear() + ", Month: " + incomeModel.getMonth());
         incomeService.putIncome(incomeModel);
         incomeChart.generateBarChartYear();
         incomeChart.generateBarChartMonth();
@@ -74,7 +72,6 @@ public class SubmitController {
 
     @PostMapping("/setSavingsGoal")
     public String setSavingsGoal(@ModelAttribute("savingsGoalModel") SavingsGoalModel savingsGoalModel, Model model, HttpSession session) {
-        System.out.println("GoalName: " + savingsGoalModel.getGoalName() + ", GoalAmount: " + savingsGoalModel.getGoalAmount());
         savingsGoalModel.setSavedAmount(savingsService.getSummedSavings());
         double progressPercentage = 0;
         double monthlySavings = savingsService.getAverageMonthlySavings();
@@ -99,7 +96,6 @@ public class SubmitController {
             model.addAttribute("estimatedGoalDate", estimatedGoalDate);
             model.addAttribute("requiredMonthlySavings", requiredMonthlySavings);
         }
-        System.out.println("monthly savings: " + monthlySavings);
 
         savingsService.putSavingsGoal(savingsGoalModel);
         session.setAttribute("savingsGoalModel", savingsGoalModel);

@@ -51,13 +51,11 @@ public class SavingsService {
 
     public Map<String, Integer> getMonthlySavingsByYear() {
         Map<String, Integer> monthlyExpenseSums = expensesService.getMonthlyExpenseSumsByYear(expensesService.getLatestYear());
-        System.out.println(monthlyExpenseSums);
         Map<String, Integer> monthlyIncomeSums = incomeService.getMonthlyIncomeSumsByYear(incomeService.getLatestYear());
         Map<String, Integer> monthlySavings = new LinkedHashMap<>();
 
         for (int i = 1; i <= 12; i++) {
             int savings = monthlyIncomeSums.get(String.valueOf(i)) - monthlyExpenseSums.get(String.valueOf(i));
-            System.out.println(savings);
             if (savings < 0) {
                 savings = 0;
             }

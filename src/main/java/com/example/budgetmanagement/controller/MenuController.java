@@ -138,12 +138,6 @@ public class MenuController {
         savingsChart.generateBarChartYear();
         savingsChart.generateBarChartMonth();
 
-        System.out.println("Goal Name:" + savingsGoalModel.getGoalName());
-        System.out.println("Goal Amount: " + savingsGoalModel.getGoalAmount());
-        System.out.println("Saved amount: " + savingsGoalModel.getSavedAmount());
-        System.out.println("Progress Percentage: " + progressPercentage);
-        System.out.println("Required monthly savings: " + requiredMonthlySavings);
-
         return "savings";
     }
 
