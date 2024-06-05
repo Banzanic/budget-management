@@ -123,6 +123,9 @@ public class MenuController {
                 requiredMonthlySavings = getRequiredMonthlySavings(savingsGoalModel);
             }
             progressPercentage = (savingsService.getSummedSavings() * 100) / savingsGoalModel.getGoalAmount();
+            if(progressPercentage > 100) {
+                progressPercentage = 100;
+            }
 
             model.addAttribute("progressPercentage", progressPercentage);
             model.addAttribute("averageMonthlySavings", monthlySavings);
